@@ -1,46 +1,65 @@
-from abc import ABC, abstractmethod
+// Interface: Refuelable
+interface Refuelable {
+    void refuel();
+}
 
-# Superclass
-class Vehicle:
-    def __init__(self, model, maxSpeed):
-        self.model = model
-        self.maxSpeed = maxSpeed
+// Superclass: Vehicle
+class Vehicle {
+    private String model;
+    private int maxSpeed;
 
-    def displayInfo(self):
-        print(f"Model: {self.model}, Max Speed: {self.maxSpeed} km/h")
+    public Vehicle(String model, int maxSpeed) {
+        this.model = model;
+        this.maxSpeed = maxSpeed;
+    }
 
-# Interface: Refuelable
-class Refuelable(ABC):
-    @abstractmethod
-    def refuel(self):
-        pass
+    public void displayInfo() {
+        System.out.println("Model: " + model + ", Max Speed: " + maxSpeed + " km/h");
+    }
+}
 
-# Subclass: Electric Vehicle
-class ElectricVehicle(Vehicle):
-    def __init__(self, model, maxSpeed, batteryCapacity):
-        super().__init__(model, maxSpeed)
-        self.batteryCapacity = batteryCapacity
+// Subclass: ElectricVehicle
+class ElectricVehicle extends Vehicle {
+    private int batteryCapacity;
 
-    def charge(self):
-        print(f"{self.model} is charging... Battery capacity: {self.batteryCapacity} kWh")
+    public ElectricVehicle(String model, int maxSpeed, int batteryCapacity) {
+        super(model, maxSpeed);
+        this.batteryCapacity = batteryCapacity;
+    }
 
-# Subclass: Petrol Vehicle (inherits Vehicle + implements Refuelable)
-class PetrolVehicle(Vehicle, Refuelable):
-    def __init__(self, model, maxSpeed, fuelCapacity):
-        super().__init__(model, maxSpeed)
-        self.fuelCapacity = fuelCapacity
+    public void charge() {
+        System.out.println("Charging... Battery capacity: " + batteryCapacity + " kWh");
+    }
+}
 
-    def refuel(self):
-        print(f"{self.model} is refueling... Fuel capacity: {self.fuelCapacity} liters")
+// Subclass: PetrolVehicle
+class PetrolVehicle extends Vehicle implements Refuelable {
+    private int fuelCapacity;
 
-# Testing
-tesla = ElectricVehicle("Tesla Model 3", 250, 75)
-honda = PetrolVehicle("Honda City", 180, 40)
+    public PetrolVehicle(String model, int maxSpeed, int fuelCapacity) {
+        super(model, maxSpeed);
+        this.fuelCapacity = fuelCapacity;
+    }
 
-tesla.displayInfo()
-tesla.charge()
+    @Override
+    public void refuel() {
+        System.out.println("Refueling... Fuel capacity: " + fuelCapacity + " liters");
+    }
+}
 
-print("------")
+// Test class
+public class VehicleTest {
+    public static void main(String[] args) {
+        ElectricVehicle tesla = new ElectricVehicle("Tesla Model 3", 250, 75);
+        PetrolVehicle honda = new PetrolVehicle("Honda City", 180, 40);
 
-honda.displayInfo()
-honda.refuel()
+        tesla.displayInfo();
+        tesla.charge();
+
+        System.out.println("------");
+
+        honda.displayInfo();
+        honda.refuel();
+    }
+}
+

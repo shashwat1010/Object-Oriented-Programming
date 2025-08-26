@@ -1,26 +1,64 @@
-# Superclass
-class Animal:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    
-    def makeSound(self):
-        print("Some generic animal sound")
+// Superclass
+class Animal {
+    String name;
+    int age;
 
-# Subclasses with unique sounds
-class Dog(Animal):
-    def makeSound(self):
-        print(f"{self.name} says: Woof! Woof!")
+    Animal(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 
-class Cat(Animal):
-    def makeSound(self):
-        print(f"{self.name} says: Meow!")
+    void makeSound() {
+        System.out.println("Some generic animal sound...");
+    }
+}
 
-class Bird(Animal):
-    def makeSound(self):
-        print(f"{self.name} says: Tweet! Tweet!")
+// Subclasses
+class Dog extends Animal {
+    Dog(String name, int age) {
+        super(name, age);
+    }
 
-# Testing
-animals = [Dog("Buddy", 3), Cat("Whiskers", 2), Bird("Tweety", 1)]
-for a in animals:
-    a.makeSound()  # Polymorphism in action
+    @Override
+    void makeSound() {
+        System.out.println(name + " (Dog): Woof Woof!");
+    }
+}
+
+class Cat extends Animal {
+    Cat(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    void makeSound() {
+        System.out.println(name + " (Cat): Meow!");
+    }
+}
+
+class Bird extends Animal {
+    Bird(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    void makeSound() {
+        System.out.println(name + " (Bird): Tweet Tweet!");
+    }
+}
+
+// Main class to test
+public class AnimalHierarchy {
+    public static void main(String[] args) {
+        Animal[] animals = {
+            new Dog("Tommy", 3),
+            new Cat("Kitty", 2),
+            new Bird("Tweety", 1)
+        };
+
+        for (Animal a : animals) {
+            a.makeSound();
+        }
+    }
+}
+

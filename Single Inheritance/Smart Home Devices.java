@@ -1,22 +1,41 @@
-# Superclass
-class Device:
-    def __init__(self, deviceId, status):
-        self.deviceId = deviceId
-        self.status = status  # e.g., "ON" or "OFF"
-    
-    def displayStatus(self):
-        print(f"Device ID: {self.deviceId}, Status: {self.status}")
+// Superclass
+class Device {
+    String deviceId;
+    String status;
 
-# Subclass
-class Thermostat(Device):
-    def __init__(self, deviceId, status, temperatureSetting):
-        super().__init__(deviceId, status)
-        self.temperatureSetting = temperatureSetting
-    
-    def displayStatus(self):
-        super().displayStatus()
-        print(f"Temperature Setting: {self.temperatureSetting}°C")
+    Device(String deviceId, String status) {
+        this.deviceId = deviceId;
+        this.status = status;
+    }
 
-# Testing
-thermo1 = Thermostat("T1001", "ON", 24)
-thermo1.displayStatus()
+    void displayStatus() {
+        System.out.println("Device ID: " + deviceId);
+        System.out.println("Status: " + status);
+    }
+}
+
+// Subclass
+class Thermostat extends Device {
+    int temperatureSetting;
+
+    Thermostat(String deviceId, String status, int temperatureSetting) {
+        super(deviceId, status); // call to Device constructor
+        this.temperatureSetting = temperatureSetting;
+    }
+
+    @Override
+    void displayStatus() {
+        super.displayStatus(); // show device info
+        System.out.println("Temperature Setting: " + temperatureSetting + "°C");
+    }
+}
+
+// Main Class
+public class SmartHomeSystem {
+    public static void main(String[] args) {
+        Thermostat thermostat = new Thermostat("T1001", "ON", 24);
+
+        thermostat.displayStatus();
+    }
+}
+

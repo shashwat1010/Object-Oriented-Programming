@@ -1,35 +1,81 @@
-# Base class
-class Order:
-    def __init__(self, orderId, orderDate):
-        self.orderId = orderId
-        self.orderDate = orderDate
-    
-    def getOrderStatus(self):
-        return f"Order {self.orderId} placed on {self.orderDate}."
+// Base Class
+class Order {
+    int orderId;
+    String orderDate;
 
-# Subclass 1
-class ShippedOrder(Order):
-    def __init__(self, orderId, orderDate, trackingNumber):
-        super().__init__(orderId, orderDate)
-        self.trackingNumber = trackingNumber
-    
-    def getOrderStatus(self):
-        return f"Order {self.orderId} has been shipped. Tracking Number: {self.trackingNumber}."
+    Order(int orderId, String orderDate) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+    }
 
-# Subclass 2 (extends ShippedOrder)
-class DeliveredOrder(ShippedOrder):
-    def __init__(self, orderId, orderDate, trackingNumber, deliveryDate):
-        super().__init__(orderId, orderDate, trackingNumber)
-        self.deliveryDate = deliveryDate
-    
-    def getOrderStatus(self):
-        return f"Order {self.orderId} delivered on {self.deliveryDate}."
+    String getOrderStatus() {
+        return "Order Placed";
+    }
 
-# Testing
-order1 = Order(1001, "2025-08-20")
-order2 = ShippedOrder(1002, "2025-08-21", "TRK12345")
-order3 = DeliveredOrder(1003, "2025-08-22", "TRK67890", "2025-08-25")
+    void displayDetails() {
+        System.out.println("Order ID: " + orderId + ", Order Date: " + orderDate);
+    }
+}
 
-print(order1.getOrderStatus())
-print(order2.getOrderStatus())
-print(order3.getOrderStatus())
+// First Level Subclass
+class ShippedOrder extends Order {
+    String trackingNumber;
+
+    ShippedOrder(int orderId, String orderDate, String trackingNumber) {
+        super(orderId, orderDate);
+        this.trackingNumber = trackingNumber;
+    }
+
+    @Override
+    String getOrderStatus() {
+        return "Order Shipped, Tracking Number: " + trackingNumber;
+    }
+
+    @Override
+    void displayDetails() {
+        super.displayDetails();
+        System.out.println("Tracking Number: " + trackingNumber);
+    }
+}
+
+// Second Level Subclass
+class DeliveredOrder extends ShippedOrder {
+    String deliveryDate;
+
+    DeliveredOrder(int orderId, String orderDate, String trackingNumber, String deliveryDate) {
+        super(orderId, orderDate, trackingNumber);
+        this.deliveryDate = deliveryDate;
+    }
+
+    @Override
+    String getOrderStatus() {
+        return "Order Delivered on " + deliveryDate;
+    }
+
+    @Override
+    void displayDetails() {
+        super.displayDetails();
+        System.out.println("Delivery Date: " + deliveryDate);
+    }
+}
+
+// Main Class
+public class RetailOrderManagement {
+    public static void main(String[] args) {
+        Order order = new Order(101, "2025-08-01");
+        ShippedOrder shipped = new ShippedOrder(102, "2025-08-05", "TRK12345");
+        DeliveredOrder delivered = new DeliveredOrder(103, "2025-08-10", "TRK67890", "2025-08-15");
+
+        order.displayDetails();
+        System.out.println("Status: " + order.getOrderStatus());
+        System.out.println("-------------------------");
+
+        shipped.displayDetails();
+        System.out.println("Status: " + shipped.getOrderStatus());
+        System.out.println("-------------------------");
+
+        delivered.displayDetails();
+        System.out.println("Status: " + delivered.getOrderStatus());
+    }
+}
+

@@ -1,41 +1,71 @@
-# Base class
-class Course:
-    def __init__(self, courseName, duration):
-        self.courseName = courseName
-        self.duration = duration  # duration in weeks or months
-    
-    def displayCourse(self):
-        print(f"Course: {self.courseName}, Duration: {self.duration}")
+// Base Class
+class Course {
+    String courseName;
+    int duration; // in weeks
 
-# Subclass 1
-class OnlineCourse(Course):
-    def __init__(self, courseName, duration, platform, isRecorded):
-        super().__init__(courseName, duration)
-        self.platform = platform
-        self.isRecorded = isRecorded
-    
-    def displayCourse(self):
-        super().displayCourse()
-        print(f"Platform: {self.platform}, Recorded: {self.isRecorded}")
+    Course(String courseName, int duration) {
+        this.courseName = courseName;
+        this.duration = duration;
+    }
 
-# Subclass 2
-class PaidOnlineCourse(OnlineCourse):
-    def __init__(self, courseName, duration, platform, isRecorded, fee, discount):
-        super().__init__(courseName, duration, platform, isRecorded)
-        self.fee = fee
-        self.discount = discount  # percentage
-    
-    def displayCourse(self):
-        super().displayCourse()
-        print(f"Fee: ₹{self.fee}, Discount: {self.discount}%")
+    void displayDetails() {
+        System.out.println("Course: " + courseName + ", Duration: " + duration + " weeks");
+    }
+}
 
-# Testing
-course1 = Course("Mathematics", "3 Months")
-course2 = OnlineCourse("Python Programming", "6 Weeks", "Udemy", True)
-course3 = PaidOnlineCourse("Data Science Bootcamp", "4 Months", "Coursera", True, 20000, 20)
+// First Level Subclass
+class OnlineCourse extends Course {
+    String platform;
+    boolean isRecorded;
 
-course1.displayCourse()
-print("------")
-course2.displayCourse()
-print("------")
-course3.displayCourse()
+    OnlineCourse(String courseName, int duration, String platform, boolean isRecorded) {
+        super(courseName, duration);
+        this.platform = platform;
+        this.isRecorded = isRecorded;
+    }
+
+    @Override
+    void displayDetails() {
+        super.displayDetails();
+        System.out.println("Platform: " + platform + ", Recorded: " + (isRecorded ? "Yes" : "No"));
+    }
+}
+
+// Second Level Subclass
+class PaidOnlineCourse extends OnlineCourse {
+    double fee;
+    double discount;
+
+    PaidOnlineCourse(String courseName, int duration, String platform, boolean isRecorded, double fee, double discount) {
+        super(courseName, duration, platform, isRecorded);
+        this.fee = fee;
+        this.discount = discount;
+    }
+
+    double getFinalFee() {
+        return fee - (fee * discount / 100);
+    }
+
+    @Override
+    void displayDetails() {
+        super.displayDetails();
+        System.out.println("Fee: " + fee + ", Discount: " + discount + "%, Final Fee: " + getFinalFee());
+    }
+}
+
+// Main Class
+public class CourseHierarchy {
+    public static void main(String[] args) {
+        Course course = new Course("Basic Programming", 6);
+        OnlineCourse online = new OnlineCourse("Data Structures", 8, "Coursera", true);
+        PaidOnlineCourse paid = new PaidOnlineCourse("Machine Learning", 12, "Udemy", true, 5000, 20);
+
+        course.displayDetails();
+        System.out.println("-------------------------");
+
+        online.displayDetails();
+        System.out.println("-------------------------");
+
+        paid.displayDetails();
+    }
+}

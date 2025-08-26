@@ -1,49 +1,77 @@
-# Superclass
-class Vehicle:
-    def __init__(self, maxSpeed, fuelType):
-        self.maxSpeed = maxSpeed
-        self.fuelType = fuelType
-    
-    def displayInfo(self):
-        print(f"Max Speed: {self.maxSpeed} km/h, Fuel Type: {self.fuelType}")
+// Superclass
+class Vehicle {
+    int maxSpeed;
+    String fuelType;
 
-# Subclass: Car
-class Car(Vehicle):
-    def __init__(self, maxSpeed, fuelType, seatCapacity):
-        super().__init__(maxSpeed, fuelType)
-        self.seatCapacity = seatCapacity
-    
-    def displayInfo(self):
-        super().displayInfo()
-        print(f"Seat Capacity: {self.seatCapacity}")
+    Vehicle(int maxSpeed, String fuelType) {
+        this.maxSpeed = maxSpeed;
+        this.fuelType = fuelType;
+    }
 
-# Subclass: Truck
-class Truck(Vehicle):
-    def __init__(self, maxSpeed, fuelType, loadCapacity):
-        super().__init__(maxSpeed, fuelType)
-        self.loadCapacity = loadCapacity  # in tons
-    
-    def displayInfo(self):
-        super().displayInfo()
-        print(f"Load Capacity: {self.loadCapacity} tons")
+    void displayInfo() {
+        System.out.println("Max Speed: " + maxSpeed + " km/h, Fuel Type: " + fuelType);
+    }
+}
 
-# Subclass: Motorcycle
-class Motorcycle(Vehicle):
-    def __init__(self, maxSpeed, fuelType, typeBike):
-        super().__init__(maxSpeed, fuelType)
-        self.typeBike = typeBike  # e.g., Sports, Cruiser
-    
-    def displayInfo(self):
-        super().displayInfo()
-        print(f"Type: {self.typeBike}")
+// Subclasses
+class Car extends Vehicle {
+    int seatCapacity;
 
-# Testing Polymorphism
-vehicles = [
-    Car(180, "Petrol", 5),
-    Truck(120, "Diesel", 20),
-    Motorcycle(220, "Petrol", "Sports")
-]
+    Car(int maxSpeed, String fuelType, int seatCapacity) {
+        super(maxSpeed, fuelType);
+        this.seatCapacity = seatCapacity;
+    }
 
-for v in vehicles:
-    v.displayInfo()
-    print("------")
+    @Override
+    void displayInfo() {
+        super.displayInfo();
+        System.out.println("Seat Capacity: " + seatCapacity);
+    }
+}
+
+class Truck extends Vehicle {
+    int loadCapacity;
+
+    Truck(int maxSpeed, String fuelType, int loadCapacity) {
+        super(maxSpeed, fuelType);
+        this.loadCapacity = loadCapacity;
+    }
+
+    @Override
+    void displayInfo() {
+        super.displayInfo();
+        System.out.println("Load Capacity: " + loadCapacity + " tons");
+    }
+}
+
+class Motorcycle extends Vehicle {
+    boolean hasGear;
+
+    Motorcycle(int maxSpeed, String fuelType, boolean hasGear) {
+        super(maxSpeed, fuelType);
+        this.hasGear = hasGear;
+    }
+
+    @Override
+    void displayInfo() {
+        super.displayInfo();
+        System.out.println("Has Gear: " + (hasGear ? "Yes" : "No"));
+    }
+}
+
+// Main class
+public class VehicleTransport {
+    public static void main(String[] args) {
+        Vehicle[] vehicles = {
+            new Car(180, "Petrol", 5),
+            new Truck(120, "Diesel", 20),
+            new Motorcycle(150, "Petrol", true)
+        };
+
+        for (Vehicle v : vehicles) {
+            v.displayInfo();
+            System.out.println("----------------------------");
+        }
+    }
+}
+
